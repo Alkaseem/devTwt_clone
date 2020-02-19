@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const db = require('./models');
+// const mongoose = require('mongoose');
+// const db = require('./models');
 
 
 
@@ -15,14 +15,14 @@ const db = require('./models');
 //     // creator: "843uhfjdhgkb767djfgdhfgk"
 // }];
 
-const data1 = [{
-    title: "This is my third one",
-    description: "feel like would work",
+// const data1 = [{
+//     title: "This is my third one",
+//     description: "feel like would work",
 
-}, {
-    title: "This is my fouth one",
-    description: "whoooo workng",
-}];
+// }, {
+//     title: "This is my fouth one",
+//     description: "whoooo workng",
+// }];
 
 // function sampleprofile() {
 //     data.forEach((profile) => {
@@ -42,31 +42,31 @@ const data1 = [{
 //     });
 // }
 
-function createPost() {
-    data1.forEach(data => {
-        const post = new db.Post({
-            title: data.title,
-            description: data.description,
-            creator: "5e4445283ea87b0e448e003e"
-        });
-        return post.save().then(pt => {
-            db.User.findById({
-                _id: "5e4445283ea87b0e448e003e"
-            }).then(user => {
-                user.posts.push(pt);
-                user.save().then(saveUser => {
-                    console.log(saveUser)
-                }).catch(err => {
-                    console.log("user not saved " + err)
-                })
-            }).catch(err => {
-                console.log("post not saved " + err)
-            })
-        }).catch(err => {
-            console.log("not Ok " + err);
-        });
-    });
-}
+// function createPost() {
+//     data1.forEach(data => {
+//         const post = new db.Post({
+//             title: data.title,
+//             description: data.description,
+//             creator: "5e4445283ea87b0e448e003e"
+//         });
+//         return post.save().then(pt => {
+//             db.User.findById({
+//                 _id: "5e4445283ea87b0e448e003e"
+//             }).then(user => {
+//                 user.posts.push(pt);
+//                 user.save().then(saveUser => {
+//                     console.log(saveUser)
+//                 }).catch(err => {
+//                     console.log("user not saved " + err)
+//                 })
+//             }).catch(err => {
+//                 console.log("post not saved " + err)
+//             })
+//         }).catch(err => {
+//             console.log("not Ok " + err);
+//         });
+//     });
+// }
 
 
 // function seedDB(){
@@ -102,4 +102,4 @@ function createPost() {
 
 
 // module.exports = sampleprofile;
-module.exports = createPost;
+// module.exports = createPost;
