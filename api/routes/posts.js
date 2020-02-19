@@ -54,5 +54,45 @@ router.post('/addPost', async (req, res) => {
     }
 });
 
+router.put('/:postId/edit', async (req, res) => {
+    try {
+        const post = await db.Post.findByIdAndUpdate(req.params.postId, req.body, {
+            new: true
+        });
+        if (!post) return res.status(401).json({
+            msg: "Post not found"
+        });
+        res.status(200).json(post);
+    } catch (err) {
+        res.status(400).json("Something Wrong! " + err);
+    }
+});
+
+router.delete('/:postId', async (req, res) => {
+    try {
+        const post = await db.Post.deleteOne({
+            _id: req.params.postId
+        });
+        if (!post) return res.status(401).json({
+            msg: "post not found"
+        });
+        const user = await db.User.findById("5e4445283ea87b0e448e003e")
+        if (!user) return res.status(401).json("user not found");
+        // Check to see if Post exists
+        if (user.posts.filter(userPost => userPost.toString() == req.params.postId).length === 0) {
+            return res.status(400).json("Post does not exist");
+        }
+        const removeIndx = user.posts
+            .map(items => items.toString()
+                .includes(req.params.postId))
+        // Splice comment out of array
+        user.posts.splice(removeIndx, 1);
+        await user.save();
+        res.status(200).json("post deleted!");
+    } catch (err) {
+        res.status(400).json("Something Wrong! " + err);
+    }
+});
+
 
 module.exports = router;

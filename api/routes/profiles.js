@@ -50,7 +50,7 @@ router.post('/create', async (req, res) => {
     }
 });
 
-router.put('/:profileId', async (req, res) => {
+router.put('/:profileId/edit', async (req, res) => {
     try {
         const profile = await db.Profile.findByIdAndUpdate(req.params.profileId, req.body, {
             new: true
