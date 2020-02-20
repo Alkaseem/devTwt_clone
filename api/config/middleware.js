@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 
 exports.loginRequired = async (req, res, next) => {
     try {
-        const token = req.headers.authorization.split(" ")[1];
+        const token = await req.headers.authorization.split(" ")[1];
+        if (!token) return res.status(401).json("Unauthorized");
         const decoded = await jwt.verify(token, process.env.SECRETE_KEY, {
             expiresIn: '1h'
         });

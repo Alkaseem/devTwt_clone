@@ -5,7 +5,8 @@ mongoose.set('debug', true);
 mongoose.connect(DB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useFindAndModify: false
+        useFindAndModify: false,
+        keepAlive: true,
     })
     .then(() => console.log("db suceessfully connected!"))
     .catch(err => console.log("Something Wrong!", err))
