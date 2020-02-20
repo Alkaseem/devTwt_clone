@@ -1,10 +1,13 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const {
+    loginRequired
+} = require('../config/middleware')
 const db = require('../models');
 
-router.get('/', async (req, res) => {
+router.get('/', loginRequired, async (req, res) => {
+    console.log(req.userId);
     try {
         const allUsers = await db.User.find().populate("posts");
         if (!allUsers) return res.status(400).json({
@@ -63,15 +66,14 @@ router.post('/login', async (req, res) => {
         };
         //sign token
         const token = await jwt.sign(payload, process.env.SECRETE_KEY, {
-            expiresIn: 3600
+            expiresIn: '1h'
         });
-        // if (err) return res.json("Password Incorrect " + err);
         res.json({
             success: true,
             token: 'Bearer ' + token
         });
     } catch (err) {
-        res.status(401).json("password Incorrect " + err);
+        res.status(401).json("Something Went Wrong " + err);
     }
 });
 

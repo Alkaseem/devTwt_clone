@@ -3,7 +3,7 @@ const db = require('../models');
 
 //Show all profiles
 router.get('/', async (req, res) => {
-    // console.log(req.user);
+    console.log(req.userId);
     try {
         const allProfiles = await db.Profile.find().populate("creator")
         if (!allProfiles) return res.status(401).send("profiles not found");
@@ -36,7 +36,7 @@ router.post('/create', async (req, res) => {
             rank,
             skills,
             image,
-            creator: "5e4445283ea87b0e448e003e"
+            creator: req.userId
         }
         const newProfile = new db.Profile(profiles);
         if (!newProfile) return res.status(400).send("Something Went Wrong!");

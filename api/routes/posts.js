@@ -1,5 +1,8 @@
 const router = require('express').Router();
 const db = require('../models');
+const {
+    loginRequired
+} = require('../config/middleware');
 
 router.get('/', async (req, res) => {
     try {
@@ -23,7 +26,7 @@ router.get('/:postId/show', async (req, res) => {
     }
 });
 
-router.post('/addPost', async (req, res) => {
+router.post('/addPost', loginRequired, async (req, res) => {
     const {
         title,
         description,
@@ -34,14 +37,14 @@ router.post('/addPost', async (req, res) => {
             title,
             description,
             image,
-            creator: "5e4445283ea87b0e448e003e"
+            creator: req.userId
         });
         const savedPost = await newPost.save();
         if (!savedPost) return res.status(400).json({
             msg: "post not saved"
         });
         const user = await db.User.findById({
-            _id: "5e4445283ea87b0e448e003e"
+            _id: req.userId
         });
         if (!user) return res.status(400).json({
             msg: "User not found"
@@ -54,7 +57,7 @@ router.post('/addPost', async (req, res) => {
     }
 });
 
-router.put('/:postId/edit', async (req, res) => {
+router.put('/:postId/edit', loginRequired, async (req, res) => {
     try {
         const post = await db.Post.findByIdAndUpdate(req.params.postId, req.body, {
             new: true
@@ -68,7 +71,7 @@ router.put('/:postId/edit', async (req, res) => {
     }
 });
 
-router.delete('/:postId', async (req, res) => {
+router.delete('/:postId', loginRequired, async (req, res) => {
     try {
         const post = await db.Post.deleteOne({
             _id: req.params.postId
@@ -76,7 +79,7 @@ router.delete('/:postId', async (req, res) => {
         if (!post) return res.status(401).json({
             msg: "post not found"
         });
-        const user = await db.User.findById("5e4445283ea87b0e448e003e")
+        const user = await db.User.findById(req.userId)
         if (!user) return res.status(401).json("user not found");
         // Check to see if Post exists
         if (user.posts.filter(userPost => userPost.toString() == req.params.postId).length === 0) {

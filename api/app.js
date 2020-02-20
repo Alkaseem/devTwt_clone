@@ -12,6 +12,9 @@ const postsRoute = require('./routes/posts');
 const {
     loginRequired
 } = require('./config/middleware');
+// const {
+//     loginRequired
+// } = require('./config/middleware');
 
 app.use(express.json());
 app.use(express.urlencoded({
@@ -26,8 +29,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users', usersRoute);
-app.use('/api/posts', loginRequired, postsRoute);
-app.use('/api/profiles', profileRoute);
+app.use('/api/posts', postsRoute);
+app.use('/api/profiles', loginRequired, profileRoute);
 
 app.listen(port, () => {
     console.log(`App started @ ${port}`);
