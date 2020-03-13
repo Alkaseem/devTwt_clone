@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const passport = require('passport');
-// const session = require('express-session');
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -12,15 +11,18 @@ const postsRoute = require('./routes/posts');
 const {
     loginRequired
 } = require('./config/middleware');
-// const {
-//     loginRequired
-// } = require('./config/middleware');
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
 // seedDB();
+
+app.use((req, res, next) => {
+    res.locals.currentUserId = req.userId
+    next()
+});
 
 app.get('/', (req, res) => {
     res.json({

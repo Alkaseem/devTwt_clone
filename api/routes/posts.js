@@ -33,6 +33,7 @@ router.post('/addPost', loginRequired, async (req, res) => {
         image
     } = req.body;
     try {
+        // const user = await db.user.findById(req.userId)
         const newPost = new db.Post({
             title,
             description,
