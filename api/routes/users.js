@@ -65,7 +65,7 @@ router.post('/login', async (req, res) => {
             email: user.email
         };
         //sign token
-        const token = await jwt.sign(payload, process.env.SECRETE_KEY, {
+        const token = await jwt.sign(payload, "somesuperscretekey", {
             expiresIn: '1h'
         });
         res.json({

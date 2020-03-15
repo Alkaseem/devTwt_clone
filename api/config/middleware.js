@@ -14,7 +14,7 @@ exports.loginRequired = async (req, res, next) => {
             res.status(401).json("Unauthorizeds");
             return next();
         }
-        const decoded = await jwt.verify(token, process.env.SECRETE_KEY, {
+        const decoded = await jwt.verify(token, "somesuperscretekey", {
             expiresIn: '1h'
         });
         if (!decoded) {
